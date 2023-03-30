@@ -175,6 +175,6 @@ function gangsterGooseOutfit(
   pop();
 }
 
-slayGooseOutfit(0, 0, 1);
+// slayGooseOutfit(0, 0, 1);
 // sirGooseOutfit(0, 0, 1);
-// gangsterGooseOutfit(0, 0, 1);
+ 
