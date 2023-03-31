@@ -75,4 +75,4 @@ function snake(x, y, s) {
   pop();
 }
 
-snake(200, 322.5, 01 );
+snake(200, 322.5, 0.5);
