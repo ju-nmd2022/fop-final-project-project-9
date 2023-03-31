@@ -83,7 +83,7 @@ function lilypad(x, y, s, r) {
   noStroke();
   arc(0, 0, 80, 80, 0, PI + 8 / PI, PIE);
   pop();
-}
+} 
 
 function lilypadFlower(x, y, s) {
   push();
