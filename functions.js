@@ -1,9 +1,10 @@
 background(255, 255, 255);
 
-function snake(snakeX, snakeY, snakeS) {
+function snake(snakeX, snakeY, snakeS, snakeR) {
   push();
   translate(snakeX, snakeY);
   scale(snakeS);
+  rotate(snakeR);
   translate(-snakeX, -snakeY);
 
   translate(snakeX - 200, snakeY - 322, 5);
@@ -122,7 +123,7 @@ function lilypadFlower(lilypadFlowerX, lilypadFlowerY, lilypadFlowerS) {
   pop();
 }
 
-function bread(breadX, breadY, breadS, breadR) {
+function bread(breadX, breadY, breadS, breadR, breadO) {
   push();
   translate(breadX, breadY);
   scale(breadS);
@@ -130,7 +131,7 @@ function bread(breadX, breadY, breadS, breadR) {
   translate(-breadX, -breadY);
 
   translate(breadX - 125, breadY - 200);
-  fill(214, 158, 91);
+  fill(214, 158, 91, breadO);
   noStroke();
   beginShape();
   vertex(100, 250);
@@ -139,7 +140,7 @@ function bread(breadX, breadY, breadS, breadR) {
   rect(100, 125, 50, 125);
   triangle(100, 125, 150, 100, 150, 125);
 
-  fill(255, 214, 164);
+  fill(255, 214, 164, breadO);
 
   beginShape();
   vertex(100, 125);
