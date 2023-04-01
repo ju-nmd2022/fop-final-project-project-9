@@ -228,6 +228,27 @@ function snake(snakeX, snakeY, snakeS, snakeR) {
   pop();
 }
 
+let isGameActive = true;
+
+let gooseX = 300;
+let gooseY = 600;
+let speedGooseX = 0;
+let speedGooseY = 0;
+
+let waveX = [];
+let waveY = [];
+let waveAlpha = [];
+
+for (let i = 0; i < 20; i++) {
+  const x = Math.floor(Math.random() * 550);
+  const y = Math.floor(Math.random() * 650);
+  const alpha = Math.random();
+
+  waveX.push(x);
+  waveY.push(y);
+  waveAlpha.push(alpha);
+}
+
 //#region  guide for "walls"
 noFill();
 
@@ -239,11 +260,43 @@ noFill();
 // rect(130, 475, 340, 40);
 //#endregion
 
+
 function gamescreen() {
   //#region background
   fill(186, 223, 255);
   rect(0, 0, 600, 650);
 
+  for (let index in waveX) {
+    noFill();
+    strokeWeight(2);
+    stroke(169, 200, 234, Math.abs(Math.sin(waveAlpha[index])) * 255);
+
+    beginShape();
+    vertex(waveX[index], waveY[index]);
+    bezierVertex(
+      waveX[index],
+      waveY[index] - 5,
+      waveX[index] + 20,
+      waveY[index] - 5,
+      waveX[index] + 20,
+      waveY[index]
+    );
+    endShape();
+
+    beginShape();
+    vertex(waveX[index] + 20, waveY[index]);
+    bezierVertex(
+      waveX[index] + 20,
+      waveY[index] + 5,
+      waveX[index] + 40,
+      waveY[index] + 5,
+      waveX[index] + 40,
+      waveY[index]
+    );
+    endShape();
+
+    waveAlpha[index] = waveAlpha[index] + 0.03;
+  }
   //Lilypad placement
   //center top
   lilypad(150, 105, 0.45, 1);
@@ -337,11 +390,6 @@ function gamescreen() {
   
   }
 }
-let gooseX = 300;
-let gooseY = 600;
-let speedGooseX = 0;
-let speedGooseY = 0;
-let isGameActive = true;
 
 function draw() {
   gamescreen();

@@ -84,7 +84,7 @@ function lilypad(lilypadX, lilypadY, lilypadS, lilypadR) {
   noStroke();
   arc(0, 0, 80, 80, 0, PI + 8 / PI, PIE);
   pop();
-} 
+}
 
 function lilypadFlower(lilypadFlowerX, lilypadFlowerY, lilypadFlowerS) {
   push();
@@ -151,6 +151,56 @@ function bread(breadX, breadY, breadS, breadR, breadO) {
   triangle(150, 170, 150, 180, 120, 190);
   triangle(150, 200, 150, 210, 120, 220);
   pop();
+}
+
+let waveX = [];
+let waveY = [];
+let waveAlpha = [];
+
+for (let i = 0; i < 20; i++) {
+  const x = Math.floor(Math.random() * 600);
+  const y = Math.floor(Math.random() * 650);
+  const alpha = Math.random();
+
+  waveX.push(x);
+  waveY.push(y);
+  waveAlpha.push(alpha);
+}
+////
+function draw() {
+  background(255, 255, 255);
+
+  for (let index in waveX) {
+    noFill();
+    strokeWeight(2);
+    stroke(169, 200, 234, Math.abs(Math.sin(waveAlpha[index])) * 255);
+
+    beginShape();
+    vertex(waveX[index], waveY[index]);
+    bezierVertex(
+      waveX[index],
+      waveY[index] - 5,
+      waveX[index] + 20,
+      waveY[index] - 5,
+      waveX[index] + 20,
+      waveY[index]
+    );
+    endShape();
+
+    beginShape();
+    vertex(waveX[index] + 20, waveY[index]);
+    bezierVertex(
+      waveX[index] + 20,
+      waveY[index] + 5,
+      waveX[index] + 40,
+      waveY[index] + 5,
+      waveX[index] + 40,
+      waveY[index]
+    );
+    endShape();
+
+    waveAlpha[index] = waveAlpha[index] + 0.03;
+  }
 }
 
 snake(200, 322.5, 0.5);
