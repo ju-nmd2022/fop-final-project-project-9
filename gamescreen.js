@@ -229,6 +229,7 @@ function snake(snakeX, snakeY, snakeS, snakeR) {
 }
 
 let isGameActive = true;
+let state = "game";
 
 let gooseX = 300;
 let gooseY = 600;
@@ -250,16 +251,7 @@ for (let i = 0; i < 20; i++) {
 }
 
 //#region  guide for "walls"
-noFill();
-
-// noFill();
-// rect(0, 280, 130, 40);
-// rect(470, 280, 130, 40);
-// rect(280, 125, 40, 350);
-// rect(130, 85, 340, 40);
-// rect(130, 475, 340, 40);
 //#endregion
-
 
 function gamescreen() {
   //#region background
@@ -387,9 +379,76 @@ function gamescreen() {
       speedGooseX = 0;
       speedGooseY = 0;
     }
-  
+  }
+
+  //#region walls
+
+  noFill();
+  stroke(0, 0, 0);
+  // rect(0, 280, 130, 40);
+  rect(470, 280, 130, 40);
+  rect(280, 125, 40, 350);
+  rect(130, 85, 340, 40);
+  // rect(130, 475, 340, 40);
+
+  //left wall underneath
+  if (
+    gooseX > 0 &&
+    gooseX < 0 + 130 &&
+    gooseY > 300 &&
+    gooseY - 45 < 300 + 20
+  ) {
+    speedGooseY = 3;
+  }
+  //left wall on top
+  if (
+    gooseX > 0 &&
+    gooseX < 0 + 130 &&
+    gooseY < 300 &&
+    gooseY + 45 > 300 - 20
+  ) {
+    speedGooseY = -3;
+  }
+  //left wall side
+  if (gooseX - 20 < 130 && gooseY > 280 && gooseY < 280 + 40) {
+    speedGooseX = 3;
+  }
+  //center bottom wall underneath
+  if (
+    gooseX > 130 &&
+    gooseX < 130 + 340 &&
+    gooseY > 495 &&
+    gooseY - 45 < 495 + 20
+  ) {
+    speedGooseY = 3;
+  }
+  //centter bottom wall left side
+  if (gooseX + 20 > 130 && gooseX < 140 && gooseY > 475 && gooseY < 475 + 40) {
+    speedGooseX = -3;
+  }
+  //center bottom wall right side
+  if (gooseX - 20 < 470 && gooseX > 460 && gooseY > 475 && gooseY < 475 + 40) {
+    speedGooseX = 3;
+  }
+  //center bottom wall on top
+  if (gooseX > 130 && gooseX < 130 + 340 && gooseY < 495 && gooseY + 45 > 495 - 20) {
+    speedGooseY = -3;
+  }
+
+  //outer walls gamescreen
+  if (state === "game") {
+  }
+  if (gooseX - 25 < 0) {
+    speedGooseX = 3;
+  } else if (gooseX + 25 > 600) {
+    speedGooseX = -3;
+  } else if (gooseY - 45 < 0) {
+    speedGooseY = 3;
+  } else if (gooseY + 40 > 650) {
+    speedGooseY = -3;
   }
 }
+//#endregion walls
 
 function draw() {
   gamescreen();
