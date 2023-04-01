@@ -1,12 +1,12 @@
 background(254, 226, 254);
 
-function goose(x, y, s, r) {
+function goose(gooseX, gooseY, gooseS, gooseR) {
   push();
-  translate(x, y);
-  scale(s);
-  rotate(r);
-  translate(-x, -y);
-  translate(x - 280, y - 322);
+  translate(gooseX, gooseY);
+  scale(gooseS);
+  rotate(gooseR);
+  translate(-gooseX, -gooseY);
+  translate(gooseX - 280, gooseY - 322);
 
   //Head
   fill(255, 255, 255);
@@ -207,6 +207,8 @@ function gangsterGooseOutfit(
   text("$", 235, 345);
   pop();
 }
+
+///////////////////////////////////////
 
 goose(100, 200, 0.5, 0);
 sirGooseOutfit(100, 200, 0.5, 0);
