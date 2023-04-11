@@ -2,6 +2,7 @@ function goose(gooseX, gooseY, gooseS, gooseR) {
   push();
   translate(gooseX, gooseY);
   scale(gooseS);
+  scale(-1, 1);
   rotate(gooseR);
   translate(-gooseX, -gooseY);
   translate(gooseX - 280, gooseY - 322);
@@ -359,9 +360,10 @@ function gamescreen() {
   bread(300, 60, 0.35, 4.6, 255);
 
   //enemies
-  let snakeY = 300;
-  snake(160, snakeY, 0.3, 0);
-  snake(440, snakeY, 0.3, 3.1);
+  let snakeYLeft = 400;
+  let snakeYRight = 200;
+  snake(160, snakeYLeft, 0.3, 0);
+  snake(440, snakeYRight, 0.3, 3.1);
 
   gooseX = gooseX + speedGooseX;
   gooseY = gooseY + speedGooseY;
