@@ -229,13 +229,20 @@ function snake(snakeX, snakeY, snakeS, snakeR) {
   pop();
 }
 
-let isGameActive = true;
-let state = "game";
+function setup() {
+  const canvas = createCanvas(600, 650);
+  x = (windowWidth - 600) / 2;
+  y = (windowHeight - 650) / 2;
+  canvas.position(x, y);
+}
 
 let gooseX = 300;
 let gooseY = 600;
 let speedGooseX = 0;
 let speedGooseY = 0;
+
+let isGameActive = true;
+let state = "game";
 
 let waveX = [];
 let waveY = [];
@@ -250,9 +257,6 @@ for (let i = 0; i < 20; i++) {
   waveY.push(y);
   waveAlpha.push(alpha);
 }
-
-//#region  guide for "walls"
-//#endregion
 
 function gamescreen() {
   //#region background
@@ -383,61 +387,68 @@ function gamescreen() {
     }
   }
 
-  //#region walls
+  function wallCollision(x, y, width, height) {
+    //top
+    if (
+      gooseX > x &&
+      gooseX < x + width &&
+      gooseY > y &&
+      gooseY - 45 < y + height
+    ) {
+      speedGooseY = 3;
+    }
+    //bottom
+    if (
+      gooseX > x &&
+      gooseX < x + width &&
+      gooseY < y &&
+      gooseY + 45 > y - height
+    ) {
+      speedGooseY = -3;
+    }
+    //left
+    if (
+      gooseX + 20 > x &&
+      gooseX < x + 10 &&
+      gooseY > y &&
+      gooseY < y + height
+    ) {
+      speedGooseX = -3;
+    }
+    //right
+    if (
+      gooseX - 20 < x + 10 &&
+      gooseX > x &&
+      gooseY > y &&
+      gooseY < y + height
+    ) {
+      speedGooseX = 3;
+    }
+  }
 
-  noFill();
-  stroke(0, 0, 0);
+  let leftWall = { x: 0, y: 280, width: 130, height: 40 };
+  let centerTopWall = { x: 130, y: 85, width: 340, height: 40 };
+  let centerMiddleWall = { x: 280, y: 125, width: 40, height: 350 };
+  let centerBottomWall = { x: 130, y: 475, width: 340, height: 40 };
+  let rightWall = { x: 470, y: 280, width: 130, height: 40 };
+
+  let wallsArray = [
+    leftWall,
+    centerTopWall,
+    centerMiddleWall,
+    centerBottomWall,
+    rightWall,
+  ];
+
+  // noFill();
+  // stroke(0, 0, 0);
   // rect(0, 280, 130, 40);
-  rect(470, 280, 130, 40);
-  rect(280, 125, 40, 350);
-  rect(130, 85, 340, 40);
+  // rect(470, 280, 130, 40);
+  // rect(280, 125, 40, 350);
+  // rect(130, 85, 340, 40);
   // rect(130, 475, 340, 40);
 
-  //left wall underneath
-  if (
-    gooseX > 0 &&
-    gooseX < 0 + 130 &&
-    gooseY > 300 &&
-    gooseY - 45 < 300 + 20
-  ) {
-    speedGooseY = 3;
-  }
-  //left wall on top
-  if (
-    gooseX > 0 &&
-    gooseX < 0 + 130 &&
-    gooseY < 300 &&
-    gooseY + 45 > 300 - 20
-  ) {
-    speedGooseY = -3;
-  }
-  //left wall side
-  if (gooseX - 20 < 130 && gooseY > 280 && gooseY < 280 + 40) {
-    speedGooseX = 3;
-  }
-  //center bottom wall underneath
-  if (
-    gooseX > 130 &&
-    gooseX < 130 + 340 &&
-    gooseY > 495 &&
-    gooseY - 45 < 495 + 20
-  ) {
-    speedGooseY = 3;
-  }
-  //centter bottom wall left side
-  if (gooseX + 20 > 130 && gooseX < 140 && gooseY > 475 && gooseY < 475 + 40) {
-    speedGooseX = -3;
-  }
-  //center bottom wall right side
-  if (gooseX - 20 < 470 && gooseX > 460 && gooseY > 475 && gooseY < 475 + 40) {
-    speedGooseX = 3;
-  }
-  //center bottom wall on top
-  if (gooseX > 130 && gooseX < 130 + 340 && gooseY < 495 && gooseY + 45 > 495 - 20) {
-    speedGooseY = -3;
-  }
-
-  //outer walls gamescreen
+  //outer walls
   if (state === "game") {
   }
   if (gooseX - 25 < 0) {
@@ -450,9 +461,9 @@ function gamescreen() {
     speedGooseY = -3;
   }
 }
-//#endregion walls
 
 function draw() {
+  frameRate(30);
   gamescreen();
   goose(gooseX, gooseY, 0.16, 0);
 }
