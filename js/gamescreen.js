@@ -228,13 +228,76 @@ function snake(snakeX, snakeY, snakeS, snakeR) {
 
   pop();
 }
-
 function setup() {
   const canvas = createCanvas(600, 650);
   x = (windowWidth - 600) / 2;
   y = (windowHeight - 650) / 2;
   canvas.position(x, y);
 }
+function wallCollision(x, y, width, height) {
+  for (let i = 0; i < wallsArray.length; i++) {
+    let wall = wallsArray[i];
+
+    //bottom
+    if (
+      gooseX > wall.x &&
+      gooseX < wall.x + wall.width &&
+      gooseY > wall.y &&
+      gooseY - 45 < wall.y + wall.height
+    ) {
+      speedGooseY = 3;
+    }
+    //top
+    if (
+      gooseX > wall.x &&
+      gooseX < wall.x + wall.width &&
+      gooseY < wall.y &&
+      gooseY + 25 > wall.y
+    ) {
+      speedGooseY = -3;
+    }
+    //left
+    if (
+      gooseX + 20 > wall.x &&
+      gooseX < wall.x + 10 &&
+      gooseY > wall.y &&
+      gooseY < wall.y + wall.height
+    ) {
+      speedGooseX = -3;
+    }
+    //right
+    if (
+      gooseX - 20 < wall.x + wall.width &&
+      gooseX > wall.x + 10 &&
+      gooseY > wall.y &&
+      gooseY < wall.y + wall.height
+    ) {
+      speedGooseX = 3;
+    }
+  }
+}
+
+let leftWall = { x: 0, y: 280, width: 130, height: 40 };
+let centerTopWall = { x: 130, y: 85, width: 340, height: 40 };
+let centerMiddleWall = { x: 280, y: 125, width: 40, height: 350 };
+let centerBottomWall = { x: 130, y: 475, width: 340, height: 40 };
+let rightWall = { x: 470, y: 280, width: 130, height: 40 };
+
+// noFill();
+// stroke(0, 0, 0);
+// rect(0, 280, 130, 40);
+// rect(470, 280, 130, 40);
+// rect(280, 125, 40, 350);
+// rect(130, 85, 340, 40);
+// rect(130, 475, 340, 40);
+
+let wallsArray = [
+  leftWall,
+  centerTopWall,
+  centerMiddleWall,
+  centerBottomWall,
+  rightWall,
+];
 
 let gooseX = 300;
 let gooseY = 600;
@@ -244,6 +307,7 @@ let speedGooseY = 0;
 let isGameActive = true;
 let state = "game";
 
+//waves in the water
 let waveX = [];
 let waveY = [];
 let waveAlpha = [];
@@ -259,7 +323,6 @@ for (let i = 0; i < 20; i++) {
 }
 
 function gamescreen() {
-  //#region background
   fill(186, 223, 255);
   rect(0, 0, 600, 650);
 
@@ -352,7 +415,7 @@ function gamescreen() {
   lilypadFlower(65, 310, 0.4);
   lilypadFlower(485, 310, 0.4);
   lilypadFlower(585, 310, 0.4);
-  //#endregion
+
   //collected items
   bread(20, 615, 0.3, 0, 120);
   bread(50, 615, 0.3, 0, 120);
@@ -387,66 +450,7 @@ function gamescreen() {
     }
   }
 
-  function wallCollision(x, y, width, height) {
-    //top
-    if (
-      gooseX > x &&
-      gooseX < x + width &&
-      gooseY > y &&
-      gooseY - 45 < y + height
-    ) {
-      speedGooseY = 3;
-    }
-    //bottom
-    if (
-      gooseX > x &&
-      gooseX < x + width &&
-      gooseY < y &&
-      gooseY + 45 > y - height
-    ) {
-      speedGooseY = -3;
-    }
-    //left
-    if (
-      gooseX + 20 > x &&
-      gooseX < x + 10 &&
-      gooseY > y &&
-      gooseY < y + height
-    ) {
-      speedGooseX = -3;
-    }
-    //right
-    if (
-      gooseX - 20 < x + 10 &&
-      gooseX > x &&
-      gooseY > y &&
-      gooseY < y + height
-    ) {
-      speedGooseX = 3;
-    }
-  }
-
-  let leftWall = { x: 0, y: 280, width: 130, height: 40 };
-  let centerTopWall = { x: 130, y: 85, width: 340, height: 40 };
-  let centerMiddleWall = { x: 280, y: 125, width: 40, height: 350 };
-  let centerBottomWall = { x: 130, y: 475, width: 340, height: 40 };
-  let rightWall = { x: 470, y: 280, width: 130, height: 40 };
-
-  let wallsArray = [
-    leftWall,
-    centerTopWall,
-    centerMiddleWall,
-    centerBottomWall,
-    rightWall,
-  ];
-
-  // noFill();
-  // stroke(0, 0, 0);
-  // rect(0, 280, 130, 40);
-  // rect(470, 280, 130, 40);
-  // rect(280, 125, 40, 350);
-  // rect(130, 85, 340, 40);
-  // rect(130, 475, 340, 40);
+  wallCollision();
 
   //outer walls
   if (state === "game") {
