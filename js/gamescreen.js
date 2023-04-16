@@ -289,12 +289,12 @@ function snake(snakeX, snakeY, snakeMirror, snakeScale, snakeR) {
 }
 function snakeCollision(x, y, width, height) {
   for (let i = 0; i < snakeArray.length; i++) {
-    let snake = snakeArray[i];
+    let enemie = snakeArray[i];
     if (
-      gooseX > snake.x &&
-      gooseX < snake.x + snake.width &&
-      gooseY > snake.y &&
-      gooseY < snake.y + snake.height
+      gooseX > enemie.x &&
+      gooseX < enemie.x + enemie.width &&
+      gooseY > enemie.y &&
+      gooseY < enemie.y + enemie.height
     ) {
       state = "lose";
     }
@@ -351,8 +351,7 @@ function wallCollision(x, y, width, height) {
 function loseScreen() {
   background(255, 0, 0);
 }
-// noFill();
-// stroke(0, 0, 0);
+
 // rect(0, 280, 130, 40);
 // rect(470, 280, 130, 40);
 // rect(280, 125, 40, 350);
@@ -373,31 +372,11 @@ let wallsArray = [
   rightWall,
 ];
 
-// noFill();
-// stroke(0);
-// rect(145, 345, 30, 110);
-
 let snakeXLeft = 160;
 let snakeYLeft = 300;
 
 let snakeXRight = 440;
 let snakeYRight = 300;
-
-let leftSnake = {
-  x: snakeXLeft - 15,
-  y: snakeYLeft - 55,
-  width: 30,
-  height: 110,
-};
-
-let rightSnake = {
-  x: snakeXRight - 15,
-  y: snakeYRight - 55,
-  width: 30,
-  height: 110,
-};
-
-let snakeArray = [leftSnake, rightSnake];
 
 let snakeScale = 0.3;
 
@@ -491,12 +470,27 @@ function gamescreen() {
     snakeMirrorRight = -0.3;
   }
 
-  push();
-  noFill();
-  stroke(0);
-  rect(snakeXLeft - 15, snakeYLeft - 55, 30, 110);
-  rect(snakeXRight - 15, snakeYRight - 55, 30, 110);
-  pop();
+  let leftSnake = {
+    x: snakeXLeft - 15,
+    y: snakeYLeft - 55,
+    width: 30,
+    height: 110,
+  };
+
+  let rightSnake = {
+    x: snakeXRight - 15,
+    y: snakeYRight - 55,
+    width: 30,
+    height: 110,
+  };
+
+  snakeArray = [leftSnake, rightSnake];
+  // push();
+  // noFill();
+  // stroke(0);
+  // rect(snakeXLeft - 15, snakeYLeft - 55, 30, 110);
+  // rect(snakeXRight - 15, snakeYRight - 55, 30, 110);
+  // pop();
 
   snake(snakeXLeft, snakeYLeft, snakeScale, snakeMirrorLeft);
   snake(snakeXRight, snakeYRight, snakeScale, snakeMirrorRight);
@@ -553,8 +547,7 @@ function gamescreen() {
 }
 
 function draw() {
-  if (state === "start") {
-  } else if (state === "game") {
+  if (state === "game") {
     frameRate(30);
     gamescreen();
   } else if (state === "lose") {
