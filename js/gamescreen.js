@@ -125,6 +125,65 @@ function lilypadFlower(lilypadFlowerX, lilypadFlowerY, lilypadFlowerS) {
 
   pop();
 }
+function lilypadPlacement() {
+  //center top
+  lilypad(150, 105, 0.45, 1);
+  lilypad(200, 105, 0.55, 5);
+  lilypad(250, 105, 0.5, 1);
+  lilypad(300, 105, 0.45, 0);
+  lilypad(350, 105, 0.5, 2);
+  lilypad(400, 105, 0.55, 3);
+  lilypad(450, 105, 0.5, 4);
+
+  //center vertical
+  lilypad(300, 150, 0.5, 3);
+  lilypad(300, 200, 0.45, 1);
+  lilypad(300, 250, 0.55, 4);
+  lilypad(300, 300, 0.5, 0);
+  lilypad(300, 350, 0.45, 3);
+  lilypad(300, 400, 0.55, 5);
+  lilypad(300, 450, 0.5, 3);
+
+  //center bottom
+  lilypad(150, 495, 0.45, 1);
+  lilypad(200, 495, 0.55, 5);
+  lilypad(250, 495, 0.5, 1);
+  lilypad(300, 495, 0.45, 0);
+  lilypad(350, 495, 0.5, 2);
+  lilypad(400, 495, 0.55, 3);
+  lilypad(450, 495, 0.5, 4);
+
+  //left horizontal
+  lilypad(15, 300, 0.5, 7);
+  lilypad(65, 300, 0.55, 4);
+  lilypad(115, 300, 0.45, 2);
+
+  //right horizontal
+  lilypad(485, 300, 0.45, 7);
+  lilypad(535, 300, 0.55, 4);
+  lilypad(585, 300, 0.5, 2);
+
+  lilypadFlower(300, 410, 0.4);
+  lilypadFlower(300, 260, 0.45);
+  lilypadFlower(300, 115, 0.4);
+  lilypadFlower(200, 115, 0.4);
+  lilypadFlower(450, 115, 0.4);
+  lilypadFlower(200, 505, 0.4);
+  lilypadFlower(350, 505, 0.4);
+  lilypadFlower(65, 310, 0.4);
+  lilypadFlower(485, 310, 0.4);
+  lilypadFlower(585, 310, 0.4);
+}
+function bridge() {
+  stroke(185, 163, 136);
+  strokeWeight(0.3);
+  fill(221, 196, 164);
+  rect(250, 580, 100, 75);
+  line(250, 595, 350, 595);
+  line(250, 610, 350, 610);
+  line(250, 625, 350, 625);
+  line(250, 640, 350, 640);
+}
 function bread(breadX, breadY, breadS, breadR, breadO) {
   push();
   translate(breadX, breadY);
@@ -228,6 +287,20 @@ function snake(snakeX, snakeY, snakeS, snakeR) {
 
   pop();
 }
+function snakeCollision(x, y, width, height) {
+  for (let i = 0; i < snakeArray.length; i++) {
+    let snake = snakeArray[i];
+    if (
+      gooseX > snake.x - 15 &&
+      gooseX < snake.x - 15 + snake.width &&
+      gooseY > snake.y - 55 &&
+      gooseY < snake.y - 55 + snake.height
+    ) {
+      state = "lose";
+    }
+  }
+}
+
 function setup() {
   const canvas = createCanvas(600, 650);
   x = (windowWidth - 600) / 2;
@@ -276,13 +349,9 @@ function wallCollision(x, y, width, height) {
     }
   }
 }
-
-let leftWall = { x: 0, y: 280, width: 130, height: 40 };
-let centerTopWall = { x: 130, y: 85, width: 340, height: 40 };
-let centerMiddleWall = { x: 280, y: 125, width: 40, height: 350 };
-let centerBottomWall = { x: 130, y: 475, width: 340, height: 40 };
-let rightWall = { x: 470, y: 280, width: 130, height: 40 };
-
+function loseScreen() {
+  background(255, 0, 0);
+}
 // noFill();
 // stroke(0, 0, 0);
 // rect(0, 280, 130, 40);
@@ -291,6 +360,12 @@ let rightWall = { x: 470, y: 280, width: 130, height: 40 };
 // rect(130, 85, 340, 40);
 // rect(130, 475, 340, 40);
 
+let leftWall = { x: 0, y: 280, width: 130, height: 40 };
+let centerTopWall = { x: 130, y: 85, width: 340, height: 40 };
+let centerMiddleWall = { x: 280, y: 125, width: 40, height: 350 };
+let centerBottomWall = { x: 130, y: 475, width: 340, height: 40 };
+let rightWall = { x: 470, y: 280, width: 130, height: 40 };
+
 let wallsArray = [
   leftWall,
   centerTopWall,
@@ -298,6 +373,28 @@ let wallsArray = [
   centerBottomWall,
   rightWall,
 ];
+
+let snakeXLeft = 160;
+let snakeYLeft = 400;
+
+let snakeXRight = 440;
+let snakeYRight = 200;
+
+let leftSnake = {
+  x: snakeXLeft - 15,
+  y: snakeXLeft - 55,
+  width: 30,
+  height: 110,
+};
+
+let rightSnake = {
+  x: snakeXRight - 15,
+  y: snakeYRight - 55,
+  width: 30,
+  height: 110,
+};
+
+let snakeArray = [leftSnake, rightSnake];
 
 let gooseX = 300;
 let gooseY = 600;
@@ -357,80 +454,31 @@ function gamescreen() {
 
     waveAlpha[index] = waveAlpha[index] + 0.03;
   }
-  //Lilypad placement
-  //center top
-  lilypad(150, 105, 0.45, 1);
-  lilypad(200, 105, 0.55, 5);
-  lilypad(250, 105, 0.5, 1);
-  lilypad(300, 105, 0.45, 0);
-  lilypad(350, 105, 0.5, 2);
-  lilypad(400, 105, 0.55, 3);
-  lilypad(450, 105, 0.5, 4);
 
-  //center vertical
-  lilypad(300, 150, 0.5, 3);
-  lilypad(300, 200, 0.45, 1);
-  lilypad(300, 250, 0.55, 4);
-  lilypad(300, 300, 0.5, 0);
-  lilypad(300, 350, 0.45, 3);
-  lilypad(300, 400, 0.55, 5);
-  lilypad(300, 450, 0.5, 3);
+  //enemies
 
-  //center bottom
-  lilypad(150, 495, 0.45, 1);
-  lilypad(200, 495, 0.55, 5);
-  lilypad(250, 495, 0.5, 1);
-  lilypad(300, 495, 0.45, 0);
-  lilypad(350, 495, 0.5, 2);
-  lilypad(400, 495, 0.55, 3);
-  lilypad(450, 495, 0.5, 4);
+  push();
+  noFill();
+  stroke(0);
+  rect(145, 345, 30, 110);
+  pop();
 
-  //left horizontal
-  lilypad(15, 300, 0.5, 7);
-  lilypad(65, 300, 0.55, 4);
-  lilypad(115, 300, 0.45, 2);
-
-  //right horizontal
-  lilypad(485, 300, 0.45, 7);
-  lilypad(535, 300, 0.55, 4);
-  lilypad(585, 300, 0.5, 2);
-
-  //bridge
-  stroke(185, 163, 136);
-  strokeWeight(0.3);
-  fill(221, 196, 164);
-  rect(250, 580, 100, 75);
-  line(250, 595, 350, 595);
-  line(250, 610, 350, 610);
-  line(250, 625, 350, 625);
-  line(250, 640, 350, 640);
-
-  lilypadFlower(300, 410, 0.4);
-  lilypadFlower(300, 260, 0.45);
-  lilypadFlower(300, 115, 0.4);
-  lilypadFlower(200, 115, 0.4);
-  lilypadFlower(450, 115, 0.4);
-  lilypadFlower(200, 505, 0.4);
-  lilypadFlower(350, 505, 0.4);
-  lilypadFlower(65, 310, 0.4);
-  lilypadFlower(485, 310, 0.4);
-  lilypadFlower(585, 310, 0.4);
-
-  //collected items
-  bread(20, 615, 0.3, 0, 120);
-  bread(50, 615, 0.3, 0, 120);
-  bread(80, 615, 0.3, 0, 120);
+  snake(snakeXLeft, snakeYLeft, 0.3, 0);
+  snake(snakeXRight, snakeYRight, 0.3, 3.1);
 
   //items to collect
   bread(245, 300, 0.35, 6, 255);
   bread(355, 300, 0.35, 3.4, 255);
   bread(300, 60, 0.35, 4.6, 255);
 
-  //enemies
-  let snakeYLeft = 400;
-  let snakeYRight = 200;
-  snake(160, snakeYLeft, 0.3, 0);
-  snake(440, snakeYRight, 0.3, 3.1);
+  bridge();
+  lilypadPlacement();
+  goose(gooseX, gooseY, 0.16, 0);
+
+  //collected items
+  bread(20, 615, 0.3, 0, 120);
+  bread(50, 615, 0.3, 0, 120);
+  bread(80, 615, 0.3, 0, 120);
 
   gooseX = gooseX + speedGooseX;
   gooseY = gooseY + speedGooseY;
@@ -451,6 +499,7 @@ function gamescreen() {
   }
 
   wallCollision();
+  snakeCollision();
 
   //outer walls
   if (state === "game") {
@@ -467,7 +516,11 @@ function gamescreen() {
 }
 
 function draw() {
-  frameRate(30);
-  gamescreen();
-  goose(gooseX, gooseY, 0.16, 0);
+  if (state === "start") {
+  } else if (state === "game") {
+    frameRate(30);
+    gamescreen();
+  } else if (state === "lose") {
+    loseScreen();
+  }
 }
