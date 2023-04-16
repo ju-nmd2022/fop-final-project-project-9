@@ -1,8 +1,7 @@
-function goose(gooseX, gooseY, gooseS, gooseR) {
+function goose(gooseX, gooseY, gooseMirror, gooseS, gooseR) {
   push();
   translate(gooseX, gooseY);
-  scale(gooseS);
-  scale(-1, 1);
+  scale(gooseMirror, gooseS);
   rotate(gooseR);
   translate(-gooseX, -gooseY);
   translate(gooseX - 280, gooseY - 322);
@@ -184,7 +183,7 @@ function bridge() {
   line(250, 625, 350, 625);
   line(250, 640, 350, 640);
 }
-function bread(breadX, breadY, breadS, breadR, breadO) {
+function bread(breadX, breadY, breadS, breadR, breadOpacity) {
   push();
   translate(breadX, breadY);
   scale(breadS);
@@ -192,7 +191,7 @@ function bread(breadX, breadY, breadS, breadR, breadO) {
   translate(-breadX, -breadY);
 
   translate(breadX - 125, breadY - 200);
-  fill(214, 158, 91, breadO);
+  fill(214, 158, 91, breadOpacity);
   noStroke();
   beginShape();
   vertex(100, 250);
@@ -201,7 +200,7 @@ function bread(breadX, breadY, breadS, breadR, breadO) {
   rect(100, 125, 50, 125);
   triangle(100, 125, 150, 100, 150, 125);
 
-  fill(255, 214, 164, breadO);
+  fill(255, 214, 164, breadOpacity);
 
   beginShape();
   vertex(100, 125);
@@ -213,10 +212,11 @@ function bread(breadX, breadY, breadS, breadR, breadO) {
   triangle(150, 200, 150, 210, 120, 220);
   pop();
 }
-function snake(snakeX, snakeY, snakeS, snakeR) {
+function snake(snakeX, snakeY, snakeMirror, snakeScale, snakeR) {
   push();
   translate(snakeX, snakeY);
-  scale(snakeS);
+  scale(snakeMirror, snakeScale);
+
   rotate(snakeR);
   translate(-snakeX, -snakeY);
 
@@ -291,16 +291,15 @@ function snakeCollision(x, y, width, height) {
   for (let i = 0; i < snakeArray.length; i++) {
     let snake = snakeArray[i];
     if (
-      gooseX > snake.x - 15 &&
-      gooseX < snake.x - 15 + snake.width &&
-      gooseY > snake.y - 55 &&
-      gooseY < snake.y - 55 + snake.height
+      gooseX > snake.x &&
+      gooseX < snake.x + snake.width &&
+      gooseY > snake.y &&
+      gooseY < snake.y + snake.height
     ) {
       state = "lose";
     }
   }
 }
-
 function setup() {
   const canvas = createCanvas(600, 650);
   x = (windowWidth - 600) / 2;
@@ -374,15 +373,19 @@ let wallsArray = [
   rightWall,
 ];
 
+// noFill();
+// stroke(0);
+// rect(145, 345, 30, 110);
+
 let snakeXLeft = 160;
-let snakeYLeft = 400;
+let snakeYLeft = 300;
 
 let snakeXRight = 440;
-let snakeYRight = 200;
+let snakeYRight = 300;
 
 let leftSnake = {
   x: snakeXLeft - 15,
-  y: snakeXLeft - 55,
+  y: snakeYLeft - 55,
   width: 30,
   height: 110,
 };
@@ -396,10 +399,21 @@ let rightSnake = {
 
 let snakeArray = [leftSnake, rightSnake];
 
+let snakeScale = 0.3;
+
+let snakeSpeedLeft = -4;
+let snakeSpeedRight = 4;
+
+let snakeMirrorLeft = 0.3;
+let snakeMirrorRight = -0.3;
+
 let gooseX = 300;
 let gooseY = 600;
 let speedGooseX = 0;
 let speedGooseY = 0;
+
+let gooseMirror = 0.16;
+let gooseScale = 0.16;
 
 let isGameActive = true;
 let state = "game";
@@ -456,15 +470,36 @@ function gamescreen() {
   }
 
   //enemies
+  snakeYLeft = snakeYLeft + snakeSpeedLeft;
+  snakeYRight = snakeYRight + snakeSpeedRight;
+
+  if (snakeYLeft > 415) {
+    snakeSpeedLeft = -4;
+    snakeMirrorLeft = 0.3;
+  }
+  if (snakeYLeft < 190) {
+    snakeSpeedLeft = 4;
+    snakeMirrorLeft = -0.3;
+  }
+
+  if (snakeYRight > 415) {
+    snakeSpeedRight = -4;
+    snakeMirrorRight = 0.3;
+  }
+  if (snakeYRight < 190) {
+    snakeSpeedRight = 4;
+    snakeMirrorRight = -0.3;
+  }
 
   push();
   noFill();
   stroke(0);
-  rect(145, 345, 30, 110);
+  rect(snakeXLeft - 15, snakeYLeft - 55, 30, 110);
+  rect(snakeXRight - 15, snakeYRight - 55, 30, 110);
   pop();
 
-  snake(snakeXLeft, snakeYLeft, 0.3, 0);
-  snake(snakeXRight, snakeYRight, 0.3, 3.1);
+  snake(snakeXLeft, snakeYLeft, snakeScale, snakeMirrorLeft);
+  snake(snakeXRight, snakeYRight, snakeScale, snakeMirrorRight);
 
   //items to collect
   bread(245, 300, 0.35, 6, 255);
@@ -473,7 +508,7 @@ function gamescreen() {
 
   bridge();
   lilypadPlacement();
-  goose(gooseX, gooseY, 0.16, 0);
+  goose(gooseX, gooseY, gooseMirror, gooseScale, 0);
 
   //collected items
   bread(20, 615, 0.3, 0, 120);
@@ -485,11 +520,13 @@ function gamescreen() {
 
   if (isGameActive) {
     if (keyIsDown(RIGHT_ARROW)) {
+      gooseMirror = -0.16;
       speedGooseX = 3;
     } else if (keyIsDown(UP_ARROW)) {
       speedGooseY = -3;
     } else if (keyIsDown(LEFT_ARROW)) {
       speedGooseX = -3;
+      gooseMirror = 0.16;
     } else if (keyIsDown(DOWN_ARROW)) {
       speedGooseY = 3;
     } else {
