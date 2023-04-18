@@ -80,7 +80,6 @@ function goose(gooseX, gooseY, gooseS, gooseR) {
   rect(317, 537, 10, 15);
   pop();
 }
-
 function sirGooseOutfit(sirGooseOutfitX, sirGooseOutfitY, sirGooseOutfitS, r) {
   push();
   translate(sirGooseOutfitX, sirGooseOutfitY);
@@ -109,7 +108,6 @@ function sirGooseOutfit(sirGooseOutfitX, sirGooseOutfitY, sirGooseOutfitS, r) {
   triangle(245, 240, 210, 230, 210, 255);
   pop();
 }
-
 function slayGooseOutfit(
   slayGooseOutfitX,
   slayGooseOutfitY,
@@ -157,7 +155,6 @@ function slayGooseOutfit(
   ellipse(272, 213, 10);
   pop();
 }
-
 function gangsterGooseOutfit(
   gangsterGooseOutfitX,
   gangsterGooseOutfitY,

@@ -372,6 +372,38 @@ let wallsArray = [
   rightWall,
 ];
 
+let breadArray = [];
+
+let breadXLeft = 245;
+let breadYLeft = 300;
+let breadRotationLeft = 6;
+let breadOpacityLeft = 255;
+
+let breadXCenter = 300;
+let breadYCenter = 60;
+let breadRotationCenter = 4.6;
+let breadOpacityCenter = 255;
+
+let breadXRight = 355;
+let breadYRight = 300;
+let breadRotationRight = 3.4;
+let breadOpacityRight = 255;
+
+let leftBread = {
+  x: breadXLeft,
+  y: breadYLeft,
+};
+
+let centerBread = {
+  x: breadXCenter,
+  y: breadYCenter,
+};
+
+let rightBread = {
+  x: breadXRight,
+  y: breadYRight,
+};
+
 let snakeXLeft = 160;
 let snakeYLeft = 300;
 
@@ -414,7 +446,9 @@ for (let i = 0; i < 20; i++) {
 
 function gamescreen() {
   fill(186, 223, 255);
+  stroke(0);
   rect(0, 0, 600, 650);
+  rect(breadXLeft - 15, breadYLeft - 35, 30, 65);
 
   for (let index in waveX) {
     noFill();
@@ -485,29 +519,30 @@ function gamescreen() {
   };
 
   snakeArray = [leftSnake, rightSnake];
-  // push();
-  // noFill();
-  // stroke(0);
-  // rect(snakeXLeft - 15, snakeYLeft - 55, 30, 110);
-  // rect(snakeXRight - 15, snakeYRight - 55, 30, 110);
-  // pop();
 
   snake(snakeXLeft, snakeYLeft, snakeScale, snakeMirrorLeft);
   snake(snakeXRight, snakeYRight, snakeScale, snakeMirrorRight);
 
   //items to collect
-  bread(245, 300, 0.35, 6, 255);
-  bread(355, 300, 0.35, 3.4, 255);
-  bread(300, 60, 0.35, 4.6, 255);
-
-  bridge();
-  lilypadPlacement();
-  goose(gooseX, gooseY, gooseMirror, gooseScale, 0);
+  bread(breadXLeft, breadYLeft, 0.35, breadRotationLeft, breadOpacityLeft);
+  bread(
+    breadXCenter,
+    breadYCenter,
+    0.35,
+    breadRotationCenter,
+    breadOpacityCenter
+  );
+  bread(breadXRight, breadYRight, 0.35, breadRotationRight, breadOpacityRight);
 
   //collected items
   bread(20, 615, 0.3, 0, 120);
   bread(50, 615, 0.3, 0, 120);
   bread(80, 615, 0.3, 0, 120);
+
+  bridge();
+  lilypadPlacement();
+
+  goose(gooseX, gooseY, gooseMirror, gooseScale, 0);
 
   gooseX = gooseX + speedGooseX;
   gooseY = gooseY + speedGooseY;
