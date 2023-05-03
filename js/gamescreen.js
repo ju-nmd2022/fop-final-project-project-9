@@ -349,6 +349,7 @@ function wallCollision() {
   }
 }
 function collectingItems(x, y, width, height) {
+  // left bread
   if (
     gooseX > leftBread.x - leftBread.width &&
     gooseX < leftBread.x + leftBread.width &&
@@ -357,42 +358,66 @@ function collectingItems(x, y, width, height) {
     keyIsDown(32) &&
     !leftBread.itemCollected
   ) {
-    console.log("vänster bröd");
     leftBread.itemCollected = true;
     breadOpacityLeft = 0;
     collectBreadArray.push(leftBread);
     collectedBreadOpacityLeft = 255;
-    console.log(collectBreadArray.length);
   }
+
+  // center bread
   if (
     gooseX > centerBread.x - centerBread.width &&
     gooseX < centerBread.x + centerBread.width &&
     gooseY > centerBread.y - centerBread.height &&
     gooseY < centerBread.y + centerBread.height &&
-    keyIsDown(32)
+    keyIsDown(32) &&
+    !centerBread.itemCollected
   ) {
-    console.log("mitten bröd");
-    itemCollected = true;
+    centerBread.itemCollected = true;
     breadOpacityCenter = 0;
     collectBreadArray.push(centerBread);
     collectedBreadOpacityCenter = 255;
   }
+  // right bread
   if (
     gooseX > rightBread.x - rightBread.width &&
     gooseX < rightBread.x + rightBread.width &&
     gooseY > rightBread.y - rightBread.height &&
     gooseY < rightBread.y + rightBread.height &&
-    keyIsDown(32)
+    keyIsDown(32) &&
+    !rightBread.itemCollected
   ) {
-    console.log("höger bröd");
-    itemCollected = true;
+    rightBread.itemCollected = true;
     breadOpacityRight = 0;
     collectBreadArray.push(rightBread);
     collectedBreadOpacityRight = 255;
   }
+
+  if (collectBreadArray.length === 3) {
+    fill(255, 255, 255);
+    noStroke();
+    rect(20, 20, 200, 100);
+    fill(0, 0, 0);
+    textSize(15);
+    text("You collected all the items,", 30, 60);
+    text("now return to the dock!", 40, 90);
+  }
+
+  if (
+    gooseX > 275 &&
+    gooseX < 275 + 50 &&
+    gooseY > 605 &&
+    gooseY < 605 + 50 &&
+    collectBreadArray.length === 3
+  ) {
+    state = "win";
+  }
 }
 function loseScreen() {
   background(255, 0, 0);
+}
+function winScreen() {
+  background(0, 255, 0);
 }
 
 let leftWall = { x: 0, y: 280, width: 130, height: 40 };
@@ -627,5 +652,7 @@ function draw() {
     gamescreen();
   } else if (state === "lose") {
     loseScreen();
+  } else if (state === "win") {
+    winScreen();
   }
 }
