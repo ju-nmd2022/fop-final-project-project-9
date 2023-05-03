@@ -306,7 +306,7 @@ function setup() {
   y = (windowHeight - 650) / 2;
   canvas.position(x, y);
 }
-function wallCollision(x, y, width, height) {
+function wallCollision() {
   for (let i = 0; i < wallsArray.length; i++) {
     let wall = wallsArray[i];
 
@@ -317,7 +317,7 @@ function wallCollision(x, y, width, height) {
       gooseY > wall.y &&
       gooseY - 45 < wall.y + wall.height
     ) {
-      speedGooseY = 3;
+      gooseY = oldGooseY;
     }
     //top
     if (
@@ -326,7 +326,7 @@ function wallCollision(x, y, width, height) {
       gooseY < wall.y &&
       gooseY + 25 > wall.y
     ) {
-      speedGooseY = -3;
+      gooseY = oldGooseY;
     }
     //left
     if (
@@ -335,7 +335,7 @@ function wallCollision(x, y, width, height) {
       gooseY > wall.y &&
       gooseY < wall.y + wall.height
     ) {
-      speedGooseX = -3;
+      gooseX = oldGooseX;
     }
     //right
     if (
@@ -344,19 +344,56 @@ function wallCollision(x, y, width, height) {
       gooseY > wall.y &&
       gooseY < wall.y + wall.height
     ) {
-      speedGooseX = 3;
+      gooseX = oldGooseX;
     }
+  }
+}
+function collectingItems(x, y, width, height) {
+  if (
+    gooseX > leftBread.x - leftBread.width &&
+    gooseX < leftBread.x + leftBread.width &&
+    gooseY > leftBread.y - leftBread.height &&
+    gooseY < leftBread.y + leftBread.height &&
+    keyIsDown(32) &&
+    !leftBread.itemCollected
+  ) {
+    console.log("vänster bröd");
+    leftBread.itemCollected = true;
+    breadOpacityLeft = 0;
+    collectBreadArray.push(leftBread);
+    collectedBreadOpacityLeft = 255;
+    console.log(collectBreadArray.length);
+  }
+  if (
+    gooseX > centerBread.x - centerBread.width &&
+    gooseX < centerBread.x + centerBread.width &&
+    gooseY > centerBread.y - centerBread.height &&
+    gooseY < centerBread.y + centerBread.height &&
+    keyIsDown(32)
+  ) {
+    console.log("mitten bröd");
+    itemCollected = true;
+    breadOpacityCenter = 0;
+    collectBreadArray.push(centerBread);
+    collectedBreadOpacityCenter = 255;
+  }
+  if (
+    gooseX > rightBread.x - rightBread.width &&
+    gooseX < rightBread.x + rightBread.width &&
+    gooseY > rightBread.y - rightBread.height &&
+    gooseY < rightBread.y + rightBread.height &&
+    keyIsDown(32)
+  ) {
+    console.log("höger bröd");
+    itemCollected = true;
+    breadOpacityRight = 0;
+    collectBreadArray.push(rightBread);
+    collectedBreadOpacityRight = 255;
   }
 }
 function loseScreen() {
   background(255, 0, 0);
 }
-
-// rect(0, 280, 130, 40);
-// rect(470, 280, 130, 40);
-// rect(280, 125, 40, 350);
-// rect(130, 85, 340, 40);
-// rect(130, 475, 340, 40);
 
 let leftWall = { x: 0, y: 280, width: 130, height: 40 };
 let centerTopWall = { x: 130, y: 85, width: 340, height: 40 };
@@ -372,37 +409,42 @@ let wallsArray = [
   rightWall,
 ];
 
-let breadArray = [];
-
-let breadXLeft = 245;
-let breadYLeft = 300;
 let breadRotationLeft = 6;
 let breadOpacityLeft = 255;
 
-let breadXCenter = 300;
-let breadYCenter = 60;
 let breadRotationCenter = 4.6;
 let breadOpacityCenter = 255;
 
-let breadXRight = 355;
-let breadYRight = 300;
 let breadRotationRight = 3.4;
 let breadOpacityRight = 255;
 
 let leftBread = {
-  x: breadXLeft,
-  y: breadYLeft,
+  x: 245,
+  y: 300,
+  width: 15,
+  height: 35,
+  itemCollected: false,
 };
-
 let centerBread = {
-  x: breadXCenter,
-  y: breadYCenter,
+  x: 300,
+  y: 60,
+  width: 15,
+  height: 35,
+  itemCollected: false,
+};
+let rightBread = {
+  x: 355,
+  y: 300,
+  width: 15,
+  height: 35,
+  itemCollected: false,
 };
 
-let rightBread = {
-  x: breadXRight,
-  y: breadYRight,
-};
+let collectedBreadOpacityLeft = 120;
+let collectedBreadOpacityCenter = 120;
+let collectedBreadOpacityRight = 120;
+
+let collectBreadArray = [];
 
 let snakeXLeft = 160;
 let snakeYLeft = 300;
@@ -420,6 +462,10 @@ let snakeMirrorRight = -0.3;
 
 let gooseX = 300;
 let gooseY = 600;
+
+let oldGooseX = 300;
+let oldGooseY = 600;
+
 let speedGooseX = 0;
 let speedGooseY = 0;
 
@@ -443,12 +489,10 @@ for (let i = 0; i < 20; i++) {
   waveY.push(y);
   waveAlpha.push(alpha);
 }
-
 function gamescreen() {
   fill(186, 223, 255);
   stroke(0);
   rect(0, 0, 600, 650);
-  rect(breadXLeft - 15, breadYLeft - 35, 30, 65);
 
   for (let index in waveX) {
     noFill();
@@ -524,26 +568,22 @@ function gamescreen() {
   snake(snakeXRight, snakeYRight, snakeScale, snakeMirrorRight);
 
   //items to collect
-  bread(breadXLeft, breadYLeft, 0.35, breadRotationLeft, breadOpacityLeft);
-  bread(
-    breadXCenter,
-    breadYCenter,
-    0.35,
-    breadRotationCenter,
-    breadOpacityCenter
-  );
-  bread(breadXRight, breadYRight, 0.35, breadRotationRight, breadOpacityRight);
+  bread(245, 300, 0.35, breadRotationLeft, breadOpacityLeft);
+  bread(300, 60, 0.35, breadRotationCenter, breadOpacityCenter);
+  bread(355, 300, 0.35, breadRotationRight, breadOpacityRight);
 
   //collected items
-  bread(20, 615, 0.3, 0, 120);
-  bread(50, 615, 0.3, 0, 120);
-  bread(80, 615, 0.3, 0, 120);
+  bread(20, 615, 0.3, 0, collectedBreadOpacityLeft);
+  bread(50, 615, 0.3, 0, collectedBreadOpacityCenter);
+  bread(80, 615, 0.3, 0, collectedBreadOpacityRight);
 
   bridge();
   lilypadPlacement();
 
   goose(gooseX, gooseY, gooseMirror, gooseScale, 0);
 
+  oldGooseX = gooseX;
+  oldGooseY = gooseY;
   gooseX = gooseX + speedGooseX;
   gooseY = gooseY + speedGooseY;
 
@@ -565,22 +605,22 @@ function gamescreen() {
   }
 
   wallCollision();
+  collectingItems();
   snakeCollision();
 
   //outer walls
   if (state === "game") {
   }
   if (gooseX - 25 < 0) {
-    speedGooseX = 3;
+    gooseX = oldGooseX;
   } else if (gooseX + 25 > 600) {
-    speedGooseX = -3;
+    gooseX = oldGooseX;
   } else if (gooseY - 45 < 0) {
-    speedGooseY = 3;
+    gooseY = oldGooseY;
   } else if (gooseY + 40 > 650) {
-    speedGooseY = -3;
+    gooseY = oldGooseY;
   }
 }
-
 function draw() {
   if (state === "game") {
     frameRate(30);
