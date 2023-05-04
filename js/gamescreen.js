@@ -78,6 +78,130 @@ function goose(gooseX, gooseY, gooseMirror, gooseS, gooseR) {
   rect(317, 537, 10, 15);
   pop();
 }
+function sirGooseOutfit(sirGooseOutfitX, sirGooseOutfitY, sirGooseOutfitS, r) {
+  push();
+  translate(sirGooseOutfitX, sirGooseOutfitY);
+  scale(sirGooseOutfitS);
+  rotate(r);
+  translate(-sirGooseOutfitX, -sirGooseOutfitY);
+
+  translate(sirGooseOutfitX - 280, sirGooseOutfitY - 320);
+
+  //Hat
+  fill(0, 0, 0);
+  rect(165, 55, 70, 10);
+  rect(180, 15, 40, 40);
+
+  //Monocel
+  noFill();
+  stroke(0, 0, 0);
+  strokeWeight(2);
+  ellipse(190, 90, 30);
+  line(195, 105, 224, 175);
+
+  //Bowtie
+  fill(0, 0, 0);
+  ellipse(245, 240, 15);
+  triangle(245, 240, 275, 220, 280, 245);
+  triangle(245, 240, 210, 230, 210, 255);
+  pop();
+}
+function slayGooseOutfit(
+  slayGooseOutfitX,
+  slayGooseOutfitY,
+  slayGooseOutfitS,
+  r
+) {
+  push();
+  translate(slayGooseOutfitX, slayGooseOutfitY);
+  scale(slayGooseOutfitS);
+  rotate(r);
+  translate(-slayGooseOutfitX, -slayGooseOutfitY);
+
+  translate(slayGooseOutfitX - 280, slayGooseOutfitY - 320);
+
+  //Tiara
+  fill(245, 245, 245);
+  noStroke();
+  rect(180, 45, 40, 20);
+  triangle(180, 45, 175, 25, 195, 45);
+  triangle(190, 45, 210, 45, 200, 25);
+  triangle(205, 45, 225, 25, 220, 45);
+
+  //Lipstick
+  fill(244, 71, 60);
+  push();
+  translate(120, 125);
+  rotate(1);
+  rect(0, 0, 15, 10);
+  pop();
+
+  //Eyelashes
+  stroke(0, 0, 0);
+  line(190, 90, 190, 80);
+  line(190, 90, 180, 85);
+  line(190, 90, 200, 85);
+
+  //Necklace
+  noStroke();
+  fill(252, 154, 148);
+  ellipse(225, 220, 10);
+  ellipse(235, 223, 10);
+  ellipse(245, 225, 10);
+  ellipse(255, 223, 10);
+  ellipse(265, 220, 10);
+  ellipse(272, 213, 10);
+  pop();
+}
+function gangsterGooseOutfit(
+  gangsterGooseOutfitX,
+  gangsterGooseOutfitY,
+  gangsterGooseOutfitS,
+  r
+) {
+  push();
+  translate(gangsterGooseOutfitX, gangsterGooseOutfitY);
+  scale(gangsterGooseOutfitS);
+  rotate(r);
+  translate(-gangsterGooseOutfitX, -gangsterGooseOutfitY);
+
+  translate(gangsterGooseOutfitX - 280, gangsterGooseOutfitY - 320);
+  //Sunglasses
+  push();
+  stroke(0, 0, 0);
+  translate(175, 78);
+  rotate(0.15);
+  fill(0, 0, 0, 160);
+  rect(0, 0, 30, 20);
+  line(0, 10, -10, 10);
+  pop();
+
+  //Cigarette
+  push();
+  translate(130, 130);
+  rotate(0.4);
+  noStroke();
+  fill(255, 255, 255);
+  rect(0, 0, 5, 35);
+  fill(175, 89, 25);
+  rect(0, 0, 5, 8);
+  fill(244, 124, 35);
+  ellipse(0, 35, 3);
+  ellipse(5, 35, 3);
+  fill(251, 193, 74);
+  ellipse(2, 37, 4);
+  pop();
+
+  //Necklace
+  stroke(0);
+  strokeWeight(4);
+  line(210, 265, 250, 310);
+  line(280, 250, 250, 310);
+  textSize(50);
+  fill(254, 176, 72);
+  text("$", 235, 345);
+  pop();
+}
 function lilypad(lilypadX, lilypadY, lilypadS, lilypadR) {
   push();
   translate(lilypadX, lilypadY);
@@ -413,13 +537,20 @@ function collectingItems(x, y, width, height) {
     state = "win";
   }
 }
-function loseScreen() {
-  background(255, 0, 0);
-}
-function winScreen() {
-  background(0, 255, 0);
+function mousePressed() {
+  if (state === "start") {
+    if (
+      mouseX > 150 &&
+      mouseX < 150 + 300 &&
+      mouseY > 100 &&
+      mouseY < 100 + 100
+    ) {
+      state = "character";
+    }
+  }
 }
 
+//#region walls
 let leftWall = { x: 0, y: 280, width: 130, height: 40 };
 let centerTopWall = { x: 130, y: 85, width: 340, height: 40 };
 let centerMiddleWall = { x: 280, y: 125, width: 40, height: 350 };
@@ -433,7 +564,9 @@ let wallsArray = [
   centerBottomWall,
   rightWall,
 ];
+//#endregion
 
+//#region breads
 let breadRotationLeft = 6;
 let breadOpacityLeft = 255;
 
@@ -470,7 +603,9 @@ let collectedBreadOpacityCenter = 120;
 let collectedBreadOpacityRight = 120;
 
 let collectBreadArray = [];
+//#endregion
 
+//#region snakes
 let snakeXLeft = 160;
 let snakeYLeft = 300;
 
@@ -484,7 +619,9 @@ let snakeSpeedRight = 4;
 
 let snakeMirrorLeft = 0.3;
 let snakeMirrorRight = -0.3;
+//#endregion
 
+//#region goose
 let gooseX = 300;
 let gooseY = 600;
 
@@ -496,9 +633,25 @@ let speedGooseY = 0;
 
 let gooseMirror = 0.16;
 let gooseScale = 0.16;
+//#endregion
 
 let isGameActive = true;
-let state = "game";
+let state = "start";
+let character = null;
+
+switch (character) {
+  case "slay":
+    slayGooseOutfit(gooseX, gooseY, 0.16);
+    break;
+
+  case "sir":
+    sirGooseOutfit(gooseX, gooseY, 0.16);
+    break;
+
+  case "gangster":
+    gangsterGooseOutfit(gooseX, gooseY, 0.16);
+    break;
+}
 
 //waves in the water
 let waveX = [];
@@ -513,6 +666,88 @@ for (let i = 0; i < 20; i++) {
   waveX.push(x);
   waveY.push(y);
   waveAlpha.push(alpha);
+}
+
+function startScreen() {
+  background(166, 208, 141);
+
+  push();
+  stroke(183, 228, 255);
+  noFill();
+  strokeWeight(150);
+
+  beginShape();
+  vertex(200, 0);
+  bezierVertex(100, 40, 100, 160, 200, 200);
+  bezierVertex(300, 240, 300, 360, 200, 400);
+  bezierVertex(100, 440, 100, 560, 200, 600);
+  bezierVertex(300, 640, 300, 760, 200, 800);
+  endShape();
+  pop();
+
+  fill(255, 255, 255);
+  rect(150, 100, 300, 100, 50);
+
+  noStroke();
+  fill(0, 0, 0);
+  textSize(20);
+  text("Start the Goose Story", 200, 155);
+
+  fill(255, 255, 255);
+  textSize(20);
+  text("How to play", 250, 245);
+
+  // textSize(30);
+  // text("↑", 295, 290);
+  // text("↓", 295, 330);
+  // text("←", 255, 330);
+  // text("→", 325, 330);
+
+  // ↑ ↓ → ←
+  push();
+  translate(95, 60);
+  textSize(15);
+  text("up", 192, 215);
+  text("left", 120, 340);
+  text("down", 182, 340);
+  text("right", 260, 340);
+
+  noFill();
+  stroke(255, 255, 255);
+  triangle(200, 235, 190, 255, 210, 255);
+
+  triangle(200, 315, 190, 295, 210, 295);
+  triangle(140, 295, 140, 315, 120, 305);
+  triangle(260, 295, 260, 315, 280, 305);
+  pop();
+
+  noFill();
+  stroke(255, 255, 255);
+  rect(250, 450, 100, 15);
+  noStroke();
+  fill(255, 255, 255);
+  textSize(15);
+  text("press to collect", 250, 490);
+
+  goose(480, 440, 0.6);
+  goose(130, 500, -0.15, 0.15);
+  goose(180, 590, -0.15, 0.15);
+  goose(150, 50, 0.15);
+}
+function characterScreen() {
+  background(166, 208, 141);
+
+  fill(0, 0, 0);
+  noStroke();
+  textSize(30);
+  text("Coose your character", 160, 100);
+
+  goose(130, 350, 0.5);
+  slayGooseOutfit(130, 350, 0.5);
+  goose(300, 350, 0.5);
+  sirGooseOutfit(300, 350, 0.5);
+  goose(470, 350, 0.5);
+  gangsterGooseOutfit(470, 350, 0.5);
 }
 function gamescreen() {
   fill(186, 223, 255);
@@ -646,8 +881,18 @@ function gamescreen() {
     gooseY = oldGooseY;
   }
 }
+function loseScreen() {
+  background(255, 0, 0);
+}
+function winScreen() {
+  background(0, 255, 0);
+}
 function draw() {
-  if (state === "game") {
+  if (state === "start") {
+    startScreen();
+  } else if (state === "character") {
+    characterScreen();
+  } else if (state === "game") {
     frameRate(30);
     gamescreen();
   } else if (state === "lose") {
