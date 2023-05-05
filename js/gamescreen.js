@@ -78,10 +78,16 @@ function goose(gooseX, gooseY, gooseMirror, gooseS, gooseR) {
   rect(317, 537, 10, 15);
   pop();
 }
-function sirGooseOutfit(sirGooseOutfitX, sirGooseOutfitY, sirGooseOutfitS, r) {
+function sirGooseOutfit(
+  sirGooseOutfitX,
+  sirGooseOutfitY,
+  sirMirror,
+  sirScale,
+  r
+) {
   push();
   translate(sirGooseOutfitX, sirGooseOutfitY);
-  scale(sirGooseOutfitS);
+  scale(sirMirror, sirScale);
   rotate(r);
   translate(-sirGooseOutfitX, -sirGooseOutfitY);
 
@@ -109,15 +115,15 @@ function sirGooseOutfit(sirGooseOutfitX, sirGooseOutfitY, sirGooseOutfitS, r) {
 function slayGooseOutfit(
   slayGooseOutfitX,
   slayGooseOutfitY,
-  slayGooseOutfitS,
+  slayMirror,
+  slayScale,
   r
 ) {
   push();
   translate(slayGooseOutfitX, slayGooseOutfitY);
-  scale(slayGooseOutfitS);
+  scale(slayMirror, slayScale);
   rotate(r);
   translate(-slayGooseOutfitX, -slayGooseOutfitY);
-
   translate(slayGooseOutfitX - 280, slayGooseOutfitY - 320);
 
   //Tiara
@@ -156,12 +162,13 @@ function slayGooseOutfit(
 function gangsterGooseOutfit(
   gangsterGooseOutfitX,
   gangsterGooseOutfitY,
-  gangsterGooseOutfitS,
+  gangsterMirror,
+  gangsterScale,
   r
 ) {
   push();
   translate(gangsterGooseOutfitX, gangsterGooseOutfitY);
-  scale(gangsterGooseOutfitS);
+  scale(gangsterMirror, gangsterScale);
   rotate(r);
   translate(-gangsterGooseOutfitX, -gangsterGooseOutfitY);
 
@@ -633,25 +640,14 @@ let speedGooseY = 0;
 
 let gooseMirror = 0.16;
 let gooseScale = 0.16;
+let slayMirror = 0.16;
+let sirMirror = 0.16;
+let gangsterMirror = 0.16;
 //#endregion
 
 let isGameActive = true;
 let state = "start";
 let character = null;
-
-switch (character) {
-  case "slay":
-    slayGooseOutfit(gooseX, gooseY, 0.16);
-    break;
-
-  case "sir":
-    sirGooseOutfit(gooseX, gooseY, 0.16);
-    break;
-
-  case "gangster":
-    gangsterGooseOutfit(gooseX, gooseY, 0.16);
-    break;
-}
 
 //waves in the water
 let waveX = [];
@@ -741,6 +737,10 @@ function characterScreen() {
   noStroke();
   textSize(30);
   text("Coose your character", 160, 100);
+  textSize(15);
+  text("Slay Goose", 85, 510);
+  text("Sir Goose", 260, 510);
+  text("Gangsta´ Goose", 410, 510);
 
   goose(130, 350, 0.5);
   slayGooseOutfit(130, 350, 0.5);
@@ -748,6 +748,38 @@ function characterScreen() {
   sirGooseOutfit(300, 350, 0.5);
   goose(470, 350, 0.5);
   gangsterGooseOutfit(470, 350, 0.5);
+
+  if (
+    mouseIsPressed &&
+    mouseX > 50 &&
+    mouseX < 50 + 150 &&
+    mouseY > 200 &&
+    mouseY < 200 + 280 &&
+    state === "character"
+  ) {
+    character = "slay";
+    state = "game";
+  } else if (
+    mouseIsPressed &&
+    mouseX > 220 &&
+    mouseX < 220 + 150 &&
+    mouseY > 200 &&
+    mouseY < 200 + 280 &&
+    state === "character"
+  ) {
+    character = "sir";
+    state = "game";
+  } else if (
+    mouseIsPressed &&
+    mouseX > 390 &&
+    mouseX < 390 + 150 &&
+    mouseY > 200 &&
+    mouseY < 200 + 280 &&
+    state === "character"
+  ) {
+    character = "gangster";
+    state = "game";
+  }
 }
 function gamescreen() {
   fill(186, 223, 255);
@@ -842,6 +874,20 @@ function gamescreen() {
 
   goose(gooseX, gooseY, gooseMirror, gooseScale, 0);
 
+  switch (character) {
+    case "slay":
+      slayGooseOutfit(gooseX, gooseY, gooseMirror, gooseScale);
+      break;
+
+    case "sir":
+      sirGooseOutfit(gooseX, gooseY, gooseMirror, gooseScale);
+      break;
+
+    case "gangster":
+      gangsterGooseOutfit(gooseX, gooseY, gooseMirror, gooseScale);
+      break;
+  }
+
   oldGooseX = gooseX;
   oldGooseY = gooseY;
   gooseX = gooseX + speedGooseX;
@@ -850,12 +896,18 @@ function gamescreen() {
   if (isGameActive) {
     if (keyIsDown(RIGHT_ARROW)) {
       gooseMirror = -0.16;
+      slayMirror = -0.16;
+      sirMirror = -0.16;
+      gangsterMirror = -0.16;
       speedGooseX = 3;
     } else if (keyIsDown(UP_ARROW)) {
       speedGooseY = -3;
     } else if (keyIsDown(LEFT_ARROW)) {
       speedGooseX = -3;
       gooseMirror = 0.16;
+      slayMirror = 0.16;
+      sirMirror = 0.16;
+      gangsterMirror = 0.16;
     } else if (keyIsDown(DOWN_ARROW)) {
       speedGooseY = 3;
     } else {
