@@ -674,7 +674,7 @@ let gangsterMirror = 0.16;
 //#endregion
 
 let isGameActive = true;
-let state = "lose";
+let state = "start";
 let character = null;
 
 //waves in the water
@@ -691,7 +691,6 @@ for (let i = 0; i < 20; i++) {
   waveY.push(y);
   waveAlpha.push(alpha);
 }
-
 function startScreen() {
   background(166, 208, 141);
 
@@ -971,17 +970,36 @@ function loseScreen() {
   noStroke();
   background(133, 167, 112);
 
-  rect(0, 0, 600, 400);
   fill(131, 165, 185);
+  rect(0, 0, 600, 400);
 
   rainCloud(500, 100);
   rainCloud(200, 150, 0.8);
   rainCloud(450, 250, 0.6);
 
-  goose(300, 400, 0.4)
+  goose(300, 400, 0.4);
   stroke(183, 228, 255);
   strokeWeight(2);
   line(265, 310, 265, 350);
+
+  fill(0, 0, 0);
+  noStroke();
+  textSize(30);
+  text("GAME OVER", 185, 100);
+
+  switch (character) {
+    case "slay":
+      slayGooseOutfit(300, 400, 0.4);
+      break;
+
+    case "sir":
+      sirGooseOutfit(300, 400, 0.4);
+      break;
+
+    case "gangster":
+      gangsterGooseOutfit(300, 400, 0.4);
+      break;
+  }
 }
 function winScreen() {
   background(0, 255, 0);
