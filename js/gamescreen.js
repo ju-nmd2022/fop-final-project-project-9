@@ -318,6 +318,20 @@ function cloud(cloudX, cloudY, cloudS) {
   ellipse(170, 90, 70, 80);
   pop();
 }
+function rainCloud(cloudX, cloudY, cloudS) {
+  push();
+  translate(cloudX, cloudY);
+  scale(cloudS);
+  translate(-cloudX, -cloudY);
+  translate(cloudX - 200, cloudY - 100);
+  fill(180, 180, 180);
+  ellipse(150, 110, 170, 70);
+  ellipse(110, 110, 80, 70);
+  ellipse(190, 110, 80, 70);
+  ellipse(130, 90, 70, 90);
+  ellipse(170, 90, 70, 80);
+  pop();
+}
 function bridge() {
   stroke(185, 163, 136);
   strokeWeight(0.3);
@@ -660,7 +674,7 @@ let gangsterMirror = 0.16;
 //#endregion
 
 let isGameActive = true;
-let state = "character";
+let state = "lose";
 let character = null;
 
 //waves in the water
@@ -954,7 +968,20 @@ function gamescreen() {
   }
 }
 function loseScreen() {
-  background(255, 0, 0);
+  noStroke();
+  background(133, 167, 112);
+
+  rect(0, 0, 600, 400);
+  fill(131, 165, 185);
+
+  rainCloud(500, 100);
+  rainCloud(200, 150, 0.8);
+  rainCloud(450, 250, 0.6);
+
+  goose(300, 400, 0.4)
+  stroke(183, 228, 255);
+  strokeWeight(2);
+  line(265, 310, 265, 350);
 }
 function winScreen() {
   background(0, 255, 0);
