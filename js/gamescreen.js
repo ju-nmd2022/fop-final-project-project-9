@@ -304,6 +304,20 @@ function lilypadPlacement() {
   lilypadFlower(485, 310, 0.4);
   lilypadFlower(585, 310, 0.4);
 }
+function cloud(cloudX, cloudY, cloudS) {
+  push();
+  translate(cloudX, cloudY);
+  scale(cloudS);
+  translate(-cloudX, -cloudY);
+  translate(cloudX - 200, cloudY - 100);
+  fill(255);
+  ellipse(150, 110, 170, 70);
+  ellipse(110, 110, 80, 70);
+  ellipse(190, 110, 80, 70);
+  ellipse(130, 90, 70, 90);
+  ellipse(170, 90, 70, 80);
+  pop();
+}
 function bridge() {
   stroke(185, 163, 136);
   strokeWeight(0.3);
@@ -646,7 +660,7 @@ let gangsterMirror = 0.16;
 //#endregion
 
 let isGameActive = true;
-let state = "start";
+let state = "character";
 let character = null;
 
 //waves in the water
@@ -732,6 +746,12 @@ function startScreen() {
 }
 function characterScreen() {
   background(166, 208, 141);
+
+  fill(183, 228, 255);
+  rect(0, 0, 600, 400);
+  cloud(200, 100);
+  cloud(500, 160, 0.8);
+  cloud(390, 60, 0.6);
 
   fill(0, 0, 0);
   noStroke();
