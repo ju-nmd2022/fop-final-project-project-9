@@ -342,6 +342,16 @@ function bridge() {
   line(250, 625, 350, 625);
   line(250, 640, 350, 640);
 }
+function balloon(x, y, R, G, B) {
+  stroke(0);
+  strokeWeight(2);
+  line(x, y, x, y + 100);
+
+  noStroke();
+  fill(R, G, B);
+  ellipse(x, y - 25, 60);
+  triangle(x, y, x - 5, y + 10, x + 5, y + 10);
+}
 function bread(breadX, breadY, breadS, breadR, breadOpacity) {
   push();
   translate(breadX, breadY);
@@ -573,6 +583,35 @@ function collectingItems(x, y, width, height) {
   }
 }
 function mousePressed() {
+  if (state === "win" || state === "lose") {
+    if (
+      mouseX > 200 &&
+      mouseX < 200 + 200 &&
+      mouseY > 540 &&
+      mouseY < 540 + 60
+    ) {
+      gooseX = 300;
+      gooseY = 600;
+
+      breadOpacityLeft = 255;
+      breadOpacityCenter = 255;
+      breadOpacityRight = 255;
+
+      collectedBreadOpacityLeft = 120;
+      collectedBreadOpacityCenter = 120;
+      collectedBreadOpacityRight = 120;
+
+      leftBread.itemCollected = false;
+      centerBread.itemCollected = false;
+      rightBread.itemCollected = false;
+
+      collectBreadArray.length = 0;
+
+      isGameActive = true;
+      state = "game";
+    }
+  }
+
   if (state === "start") {
     if (
       mouseX > 150 &&
@@ -985,7 +1024,7 @@ function loseScreen() {
   fill(0, 0, 0);
   noStroke();
   textSize(30);
-  text("GAME OVER", 185, 100);
+  text("GAME OVER", 205, 100);
 
   switch (character) {
     case "slay":
@@ -1000,9 +1039,65 @@ function loseScreen() {
       gangsterGooseOutfit(300, 400, 0.4);
       break;
   }
+
+  // Play again button
+  fill(246, 206, 238);
+  strokeWeight(4);
+  stroke(237, 182, 225);
+  rect(200, 540, 200, 60, 20);
+
+  noStroke();
+  fill(20);
+  textSize(20);
+  text("Play Again", 250, 575);
 }
 function winScreen() {
-  background(0, 255, 0);
+  background(166, 208, 141);
+  noStroke();
+
+  fill(183, 228, 255);
+  rect(0, 0, 600, 400);
+
+  cloud(500, 100);
+  cloud(200, 150, 0.8);
+  cloud(450, 250, 0.6);
+
+  goose(300, 400, 0.4);
+
+  fill(0, 0, 0);
+  noStroke();
+  textSize(30);
+  text("CONGRATULATIONS", 150, 100);
+
+  switch (character) {
+    case "slay":
+      slayGooseOutfit(300, 400, 0.4);
+      break;
+
+    case "sir":
+      sirGooseOutfit(300, 400, 0.4);
+      break;
+
+    case "gangster":
+      gangsterGooseOutfit(300, 400, 0.4);
+      break;
+  }
+  // Play again button
+  fill(246, 206, 238);
+  strokeWeight(4);
+  stroke(237, 182, 225);
+  rect(200, 540, 200, 60, 20);
+
+  noStroke();
+  fill(20);
+  textSize(20);
+  text("Play Again", 250, 575);
+
+  balloon(80, 110, 255, 156, 156);
+  balloon(400, 210, 255, 249, 156);
+  balloon(160, 230, 156, 181, 255);
+  balloon(290, 170, 255, 211, 156);
+  balloon(510, 80, 175, 255, 156);
 }
 function draw() {
   if (state === "start") {
