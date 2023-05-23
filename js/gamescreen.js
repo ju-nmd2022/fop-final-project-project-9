@@ -759,13 +759,6 @@ function startScreen() {
   textSize(20);
   text("How to play", 250, 245);
 
-  // textSize(30);
-  // text("↑", 295, 290);
-  // text("↓", 295, 330);
-  // text("←", 255, 330);
-  // text("→", 325, 330);
-
-  // ↑ ↓ → ←
   push();
   translate(95, 60);
   textSize(15);
@@ -946,6 +939,7 @@ function gamescreen() {
 
   goose(gooseX, gooseY, gooseMirror, gooseScale, 0);
 
+  // The following 10 lines of code is retrived from https://www.w3schools.com/js/js_switch.asp may 23
   switch (character) {
     case "slay":
       slayGooseOutfit(gooseX, gooseY, gooseMirror, gooseScale);
